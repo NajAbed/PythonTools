@@ -516,10 +516,6 @@ m = Basemap(llcrnrlon=-145.5,llcrnrlat=1.,urcrnrlon=-2.566,urcrnrlat=46.352,\
 ny = lons.shape[0]; nx = lons.shape[1]
 lons1, lats1 = m(lons, lats)
 mint=lons.min();maxt=lons.max();bground=(lons-mint)/(maxt-mint)*5
-#1 + (x-A)*(10-1)/(B-A)
-#bground = lons/10
-#bground = lons/5
-#bground = [[0 for x in range(lons.shape[1])] for x in range(lons.shape[0])]
 cmap = matplotlib.colors.ListedColormap(['#7a0177','#c51b8a','#f768a1','#fbb4b9','#feebe2'])
 im=ax1.pcolor(lons1,lats1,bground, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
 ax1.cla()
@@ -538,25 +534,6 @@ canvas1.config(xscrollcommand=xScrollbar.set)
 xScrollbar.config(command=canvas1.xview)
 canvas1.config(yscrollcommand=yScrollbar.set)
 yScrollbar.config(command=canvas1.yview)
-
-
-##mplCanvas = canvas.get_tk_widget()
-##factor =2
-##cwid = canvas1.create_window(0, 0, window=mplCanvas, anchor=Tkconstants.NW)
-##oldSize = f.get_size_inches()
-##f.set_size_inches([factor * s for s in oldSize])
-##wi,hi = [i*f.dpi for i in f.get_size_inches()]
-##mplCanvas.config(width=wi, height=hi)
-##canvas1.itemconfigure(cwid, width=wi, height=hi)
-##canvas1.config(scrollregion=canvas1.bbox(Tkconstants.ALL),width=200,height=200)
-##tz.set_fontsize(tz.get_fontsize()*factor)
-##for item in ([ax1.title, ax1.xaxis.label, ax1.yaxis.label] + ax1.get_xticklabels() + ax1.get_yticklabels()):
-##        item.set_fontsize(item.get_fontsize()*factor)
-##ax.xaxis.labelpad = ax.xaxis.labelpad*factor
-##ax.yaxis.labelpad = ax.yaxis.labelpad*factor
-##f.subplots_adjust(left=0.2, bottom=0.15, top=0.86)
-##f.canvas1.draw() 
-
   
 def prestemphumid1():
 				ensembles=['ens_01','ens_02','ens_03','ens_04','ens_05','ens_06','ens_07',\
@@ -730,39 +707,24 @@ def prestemphumid1():
 					else:
 						pass          
 					t1 = pearcor(xx, yy)
-					#dtp[i] = t1
-					#print dtp[i],pearcor(xx, yy),temporary
-					#dth[i]=pearcor(xx, zz)
 					t2 = pearcor(xx, zz)
-					#dph[i]=pearcor(yy, zz)
 					t3=pearcor(yy, zz)
-
-##					if t1==1:
-##							t1=0.999
-##					if t2==1:
-##							t2=0.999
-##					if t3==1:
-##							t3=0.999
+					t3=0.999
 					vv=t2*t2#t1*t1
 					
 					xx=t3*t3#t2*t2*0.16
 					zz=2*t2*t3*t1#2*(t1*t1*t2*0.064)
 					gg=1-(t1*t1)#1-(t3*t3*0.4)
 					d[i]= ((vv+xx-zz)/gg)**0.5
-					#print d[i]
 				
 				d1=np.array(d)
 				maxp = d1.max()
 				minp = d1.min()
-				#d1=-1*(1-((d1-minp)/(maxp-minp)))+((d1-minp)/(maxp-minp))
-				#print d1
 				vx1=[[0.0 for xv in range(lons.shape[1])] for xv in range(lons.shape[0])]
 				vy1=[[0.0 for xv in range(lons.shape[1])] for xv in range(lons.shape[0])]
 				vx1=np.array(vx1)
 				vy1=np.array(vy1)
 				d5=np.array(d1)
-				#print d5.shape
-				#print lons.shape[0]
 				d6=d5.reshape(lons.shape[0],lons.shape[1])
 				for i in xrange(length):
 						vx1[i]=1/(1+d6[i]**2)**0.5
@@ -877,7 +839,6 @@ def presinc1():
 						if(x[i][j]>0) :
 							ax1.scatter(lons1[i][j],lats1[i][j],c= co)
 				
-				#ax1.contour(lons1,lats1,x[:,:])
 				canvas.show()
 				if vpresinc.get()== 0:
 						ax1.cla()
@@ -1107,9 +1068,6 @@ def preshumid1():
 						
 def map1():
 				p = f.gca()
-				#root = Tk.Tk()
-				#fig = Figure()  ## here
-				#ax1.set_visible(True)
 				ax1 = f.add_subplot(111)  ## 
 				"""m = Basemap(width=9000000,height=7000000,projection='lcc', 
 			resolution='c',lat_1=45.,lat_2=55,lat_0=50,lon_0=-97.,
@@ -1124,9 +1082,6 @@ def map1():
 				m.drawstates()
 				ny = lons.shape[0]; nx = lons.shape[1]
 				lons1, lats1 = m(lons, lats)
-				#m.drawmapboundary(fill_color='aqua')
-				#m.fillcontinents(color='coral',lake_color='aqua')
-				#canvas = FigureCanvasTkAgg(f, master=root)  ## here
 				canvas.show()
 				if map2.get()== 0:
 						ax1.cla()
@@ -1134,7 +1089,6 @@ def map1():
 						plt.ylabel("Latitude")
 						canvas.show()
 def ensrand(enrand):
-				#enrand=random.choice(ensembles)
 				l=[]
 				l.append("C:/Users/Najmeh/Documents/dissertation/1999030418/")
 				l.append("C:/Users/Najmeh/Documents/dissertation/1999030418/")
@@ -1291,11 +1245,8 @@ def clusteringaxes():
 				'ens_08','ens_09','ens_10','ens_11','ens_12','ens_13','ens_14','ens_15','ens_16'\
 				,'ens_17','ens_18','ens_19','ens_20','ens_21','ens_22','ens_23','ens_24','ens_25'\
 				,'ens_26','ens_27','ens_28','ens_29','ens_30']
-			   
-				#timestep=randint(0,71)
-				#print timestep
+			        
 				timestep=b
-				#timestep=62     
 				enrand=ensembles[29]
 				url=ensrand(enrand)[timestep]
 				dset = Dataset(url)
@@ -1338,7 +1289,6 @@ def clusteringaxes():
 				windv3 = windv3.reshape(len(windv3), 1)
 
 								
-				#def ensselect(temp1,pres1,humid1,height1,windu1,windv1):
 				for i in xrange(29):
 						enrand=ensembles[i]
 						url=ensrand(enrand)[timestep]
@@ -1382,16 +1332,12 @@ def clusteringaxes():
 						windv3 = np.insert(windv3, 0, windv, axis=1)#ensdata = np.hstack((ensdata,windv3))
 
 				ensdata=temp3
-				#print ensdata.shape
-				#ensdata=[]
-				#np.insert(ensdata,1,temp3,axis=0)
 				ensdata=np.insert(ensdata,20253,pres3,axis=0)
 				ensdata=np.insert(ensdata,40506,height3,axis=0)
 				ensdata=np.insert(ensdata,60759,humid3,axis=0)
 				ensdata=np.insert(ensdata,81012,windu3,axis=0)
 				ensdata=np.insert(ensdata,101265,windv3,axis=0)
 				batch_size=100  
-				#print ensdata.shape  #3645540
 				mbk = MiniBatchKMeans(init='k-means++', n_clusters=5, batch_size=batch_size,
 									  n_init=10, max_no_improvement=10, verbose=0)
 				temp1 = ensdata#np.resize(ensdata,(3645540,1))
@@ -1399,8 +1345,7 @@ def clusteringaxes():
 				mbk_means_labels = mbk.labels_ # 3645540 number between 0 and 4 
 				mbk_means_cluster_centers = mbk.cluster_centers_ # 5 numbers between 0 and 1 
 				mbk_means_labels_unique = np.unique(mbk_means_labels)# [0 1 2 3 4]
-				#print mbk_means_labels.shape
-				#print ensdata.shape
+
 				temp4=mbk_means_labels[0:20253]
 				pres4=mbk_means_labels[20253:40506]
 				height4=mbk_means_labels[40506:60759]
@@ -1462,13 +1407,8 @@ def clusteringaxes():
 						ax4.set_visible(False)
 						ax5.set_visible(False)
 						ax6.set_visible(False)
-						#cb.outline.set_visible(False)
-						#cb.set_ticks([])
-						#cb.outline.set_visible(False)
-						#ax1.cla()
 						plt.xlabel("Longtitude")
 						plt.ylabel("Latitude")
-						#ax1 = f.add_subplot(111)
 						canvas.show()
 
 
@@ -1477,11 +1417,8 @@ def clusteringallcol():
 				'ens_08','ens_09','ens_10','ens_11','ens_12','ens_13','ens_14','ens_15','ens_16'\
 				,'ens_17','ens_18','ens_19','ens_20','ens_21','ens_22','ens_23','ens_24','ens_25'\
 				,'ens_26','ens_27','ens_28','ens_29','ens_30']
-			   
-				#timestep=randint(0,71)
-				#print timestep
+			        
 				timestep=b
-				#timestep=62     
 				enrand=ensembles[29]
 				url=ensrand(enrand)[timestep]
 				dset = Dataset(url)
@@ -1515,16 +1452,6 @@ def clusteringallcol():
 				humid3=humid3.ravel()
 				windu3=windu3.ravel()
 				windv3=windv3.ravel()
-
-##				temp3 = temp3.reshape(len(temp3), 1)
-##				pres3 = pres3.reshape(len(pres3), 1)
-##				height3 = height3.reshape(len(height3), 1)
-##				humid3 = humid3.reshape(len(humid3), 1)
-##				windu3 = windu3.reshape(len(windu3), 1)
-##				windv3 = windv3.reshape(len(windv3), 1)
-
-								
-				#def ensselect(temp1,pres1,humid1,height1,windu1,windv1):
 				for i in xrange(29):
 						enrand=ensembles[i]
 						url=ensrand(enrand)[timestep]
@@ -1559,27 +1486,12 @@ def clusteringallcol():
 						humid=humid.ravel()
 						windu=windu.ravel()
 						windv=windv.ravel()
-						#print temp.shape
-						#print temp3.shape
 						temp3 = np.insert(temp3, 0, temp, axis=0)
 						pres3 = np.insert(pres3, 0, pres, axis=0)#hstack((temp3,pres3))
 						humid3 = np.insert(humid3, 0, humid, axis=0)#ensdata = np.hstack((ensdata,humid3))
 						height3 = np.insert(height3, 0, height, axis=0)#ensdata = np.hstack((ensdata,height3))
 						windu3 = np.insert(windu3, 0, windu, axis=0)#ensdata = np.hstack((ensdata,windu3))
 						windv3 = np.insert(windv3, 0, windv, axis=0)#ensdata = np.hstack((ensdata,windv3))
-##
-##				plt.subplot(231)
-##				plt.title("Temperature")
-##				plt.subplot(232)
-##				plt.title("Pressure")
-##				plt.subplot(233)
-##				plt.title("Humidity")
-##				plt.subplot(234)
-##				plt.title("Height")
-##				plt.subplot(235)
-##				plt.title("Windu")
-##				plt.subplot(236)
-##				plt.title("Windv")
 				ax1 = f.add_subplot(2,3,1)
 				ax2 = f.add_subplot(2,3,2)
 				ax3 = f.add_subplot(2,3,3)
@@ -1602,10 +1514,7 @@ def clusteringallcol():
 
 				allen=20253
 				allv=temp3
-				#print temp3.shape#(607590,)
-				#print allv
 				tim = allen/30
-				#allv=[0 for su1 in xrange(allen)]
 				alltime=[0 for su1 in xrange(allen)]
 				alltime1=[0 for su1 in xrange(allen)]
 				alltime2=[0 for su1 in xrange(allen)]
@@ -1614,11 +1523,6 @@ def clusteringallcol():
 				alltime5=[0 for su1 in xrange(allen)]
 				alltime6=[0 for su1 in xrange(allen)]
 
-
-##				for i in xrange(allen):
-##						allv[i]=temp4[i]+humid4[i]+height4[i]+windu4[i]+windv4[i]
-##
-##				#print '2'       
 				for i in xrange(30):
 						j=i*allen
 						#print i
@@ -1628,9 +1532,7 @@ def clusteringallcol():
 							else:
 								   tempor = temp3[k]
 								   alltime1[k]= temp3[k+j]
-								   #print (alltime1[k],tempor)
 								   if tempor-0.05 < alltime1[k] < tempor+0.05:
-									   #print (alltime1[k],tempor)
 									   pass
 								   else:
 									   alltime1[k]= 7777
@@ -1640,9 +1542,7 @@ def clusteringallcol():
 							else:
 								   tempor = pres3[k]
 								   alltime2[k]= pres3[k+j]
-								   #print (alltime1[k],tempor)
 								   if tempor-0.09 < alltime2[k] < tempor+0.09:
-									   #print (alltime1[k],tempor)
 									   pass
 								   else:
 									   alltime2[k]= 7777
@@ -1652,9 +1552,7 @@ def clusteringallcol():
 							else:
 								   tempor = humid3[k]
 								   alltime3[k]= humid3[k+j]
-								   #print (alltime1[k],tempor)
 								   if tempor-0.3 < alltime3[k] < tempor+0.3:
-									   #print (alltime1[k],tempor)
 									   pass
 								   else:
 									   alltime3[k]= 7777
@@ -1664,9 +1562,7 @@ def clusteringallcol():
 							else:
 								   tempor = height3[k]
 								   alltime4[k]= height3[k+j]
-								   #print (alltime1[k],tempor)
 								   if tempor-0.09 < alltime4[k] < tempor+0.09:
-									   #print (alltime1[k],tempor)
 									   pass
 								   else:
 									   alltime4[k]= 7777
@@ -1676,9 +1572,7 @@ def clusteringallcol():
 							else:
 								   tempor = windu3[k]
 								   alltime5[k]= windu3[k+j]
-								   #print (alltime1[k],tempor)
 								   if tempor-0.2 < alltime5[k] < tempor+0.2:
-									   #print (alltime1[k],tempor)
 									   pass
 								   else:
 									   alltime5[k]= 7777
@@ -1688,9 +1582,7 @@ def clusteringallcol():
 							else:
 								   tempor = windv3[k]
 								   alltime6[k]= windv3[k+j]
-								   #print (alltime1[k],tempor)
 								   if tempor-0.2 < alltime6[k] < tempor+0.2:
-									   #print (alltime1[k],tempor)
 									   pass
 								   else:
 									   alltime6[k]= 7777 
@@ -1742,13 +1634,8 @@ def clusteringallcol():
 						ax5.set_visible(False)
 						ax6.set_visible(False)
 						plt.cla()
-						#cb.outline.set_visible(False)
-						#cb.set_ticks([])
-						#cb.outline.set_visible(False)
-						#ax1.cla()
 						plt.xlabel("Longtitude")
 						plt.ylabel("Latitude")
-						#ax1 = f.add_subplot(111)
 						canvas.show()
 
 
@@ -1758,11 +1645,7 @@ def clustering1():
 				'ens_08','ens_09','ens_10','ens_11','ens_12','ens_13','ens_14','ens_15','ens_16'\
 				,'ens_17','ens_18','ens_19','ens_20','ens_21','ens_22','ens_23','ens_24','ens_25'\
 				,'ens_26','ens_27','ens_28','ens_29','ens_30']
-			   
-				#timestep=randint(0,71)
-				#print timestep
 				timestep=b
-				#timestep=62     
 				enrand=ensembles[29]
 				url=ensrand(enrand)[timestep]
 				dset = Dataset(url)
@@ -1805,7 +1688,6 @@ def clustering1():
 				windv3 = windv3.reshape(len(windv3), 1)
 
 								
-				#def ensselect(temp1,pres1,humid1,height1,windu1,windv1):
 				for i in xrange(29):
 						enrand=ensembles[i]
 						url=ensrand(enrand)[timestep]
@@ -1847,32 +1729,13 @@ def clustering1():
 						height3 = np.insert(height3, 0, height, axis=1)#ensdata = np.hstack((ensdata,height3))
 						windu3 = np.insert(windu3, 0, windu, axis=1)#ensdata = np.hstack((ensdata,windu3))
 						windv3 = np.insert(windv3, 0, windv, axis=1)#ensdata = np.hstack((ensdata,windv3))
-##                                print temp3.shape  #20253,30
-##                                print temp.shape   #20253,
-##				ensdata=np.hstack((temp3,pres3))
-##				ensdata=np.hstack((ensdata,height3))
-##				ensdata=np.hstack((ensdata,humid3))
-##				ensdata=np.hstack((ensdata,windu3))
-##				ensdata=np.hstack((ensdata,windv3))
 				ensdata=temp3
 				ensdata=np.insert(ensdata,2,pres3,axis=0)
 				ensdata=np.insert(ensdata,3,height3,axis=0)
 				ensdata=np.insert(ensdata,4,humid3,axis=0)
 				ensdata=np.insert(ensdata,5,windu3,axis=0)
 				ensdata=np.insert(ensdata,6,windv3,axis=0)
-				#print ensdata.shape
-##				ensdata=temp3
-##				ensdata=np.append(ensdata,pres3)
-##				ensdata=np.append(ensdata,height3)
-##				print ensdata.shape
-##				ensdata=np.append(ensdata,humid3)
-##				ensdata=np.append(ensdata,windu3)
-##				ensdata=np.append(ensdata,windv3)
-
-##				print ensdata.shape#(20253, 180)
-
 				batch_size=100  
-				#print ensdata.shape  #3645540
 				mbk = MiniBatchKMeans(init='k-means++', n_clusters=5, batch_size=batch_size,
 									  n_init=10, max_no_improvement=10, verbose=0)
 				temp1 = ensdata#np.resize(ensdata,(3645540,1))
@@ -1880,8 +1743,6 @@ def clustering1():
 				mbk_means_labels = mbk.labels_ # 3645540 number between 0 and 4 
 				mbk_means_cluster_centers = mbk.cluster_centers_ # 5 numbers between 0 and 1 
 				mbk_means_labels_unique = np.unique(mbk_means_labels)# [0 1 2 3 4]
-				#print mbk_means_labels.shape
-				#print ensdata.shape
 				temp4=mbk_means_labels[0:20253]
 				pres4=mbk_means_labels[20253:40506]
 				humid4=mbk_means_labels[40506:60759]
@@ -1895,53 +1756,18 @@ def clustering1():
 				allv=[0 for su1 in xrange(allen)]
 				alltime=[0 for su1 in xrange(tim)]
 				alltime1=[0 for su1 in xrange(tim)]
-##				ax1 = f.add_subplot(2,3,1)
-##				ax2 = f.add_subplot(2,3,2)
-##				ax3 = f.add_subplot(2,3,3)
-##				ax4 = f.add_subplot(2,3,4)
-##				ax5 = f.add_subplot(2,3,5)
-##				ax6 = f.add_subplot(2,3,6)
-##				temp4=np.reshape(temp4,(129,157))
-##				pres4=np.reshape(pres4,(129,157))
-##				humid4=np.reshape(humid4,(129,157))
-##				height4=np.reshape(height4,(129,157))
-##				windu4=np.reshape(windu4,(129,157))
-##				windv4=np.reshape(windv4,(129,157))
-				
-##				cmap = matplotlib.colors.ListedColormap(['#7a0177','#c51b8a','#f768a1','#fbb4b9','#feebe2'])
-##				ax1.pcolor(lons1,lats1,temp4, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
-##				ax2.pcolor(lons1,lats1,pres4, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
-##				ax3.pcolor(lons1,lats1,humid4, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
-##				ax4.pcolor(lons1,lats1,height4, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
-##				ax5.pcolor(lons1,lats1,windu4, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
-##                                ax6.pcolor(lons1,lats1,windv4, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
-
 				for i in xrange(allen):
 						allv[i]=temp4[i]+humid4[i]+height4[i]+windu4[i]+windv4[i]
-##
-##				#print '2'       
-##				for i in xrange(30):
-##						j=i*tim
-##						for k in xrange(tim):
-##							   alltime1[k]= allv[k+j]
-##							   alltime[k]= alltime[k] + alltime1[k]
-##				
 				temp2=np.reshape(allv,(129,157))
 				cmap = matplotlib.colors.ListedColormap(['#7a0177','#c51b8a','#f768a1','#fbb4b9','#feebe2'])
 				im=ax1.pcolor(lons1,lats1,temp2, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
 				cbar = f.colorbar(mappable=im, cax=ax1)
 				cbar.ax.set_ylabel('Cluster Density', rotation=270)
-				#cb=f.colorbar(dd)
 				canvas.show()
 				if cluster1.get()== 0:
 						plt.cla()
-						#cb.outline.set_visible(False)
-						#cb.set_ticks([])
-						#cb.outline.set_visible(False)
-						#ax1.cla()
 						plt.xlabel("Longtitude")
 						plt.ylabel("Latitude")
-						#ax1 = f.add_subplot(111)
 						canvas.show()
 
 
@@ -1951,11 +1777,7 @@ def clustering2():
 				'ens_08','ens_09','ens_10','ens_11','ens_12','ens_13','ens_14','ens_15','ens_16'\
 				,'ens_17','ens_18','ens_19','ens_20','ens_21','ens_22','ens_23','ens_24','ens_25'\
 				,'ens_26','ens_27','ens_28','ens_29','ens_30']
-			   
-				#timestep=randint(0,71)
-				#print timestep
 				timestep=b
-				#timestep=62     
 				enrand=ensembles[29]
 				url=ensrand(enrand)[timestep]
 				dset = Dataset(url)
@@ -1996,9 +1818,6 @@ def clustering2():
 				humid3 = humid3.reshape(len(humid3), 1)
 				windu3 = windu3.reshape(len(windu3), 1)
 				windv3 = windv3.reshape(len(windv3), 1)
-
-								
-				#def ensselect(temp1,pres1,humid1,height1,windu1,windv1):
 				for i in xrange(29):
 						enrand=ensembles[i]
 						url=ensrand(enrand)[timestep]
@@ -2040,35 +1859,13 @@ def clustering2():
 						height3 = np.insert(height3, 0, height, axis=1)#ensdata = np.hstack((ensdata,height3))
 						windu3 = np.insert(windu3, 0, windu, axis=1)#ensdata = np.hstack((ensdata,windu3))
 						windv3 = np.insert(windv3, 0, windv, axis=1)#ensdata = np.hstack((ensdata,windv3))
-##                                print temp3.shape  #20253,30
-##                                print temp.shape   #20253,
-##				ensdata=np.hstack((temp3,pres3))
-##				ensdata=np.hstack((ensdata,height3))
-##				ensdata=np.hstack((ensdata,humid3))
-##				ensdata=np.hstack((ensdata,windu3))
-##				ensdata=np.hstack((ensdata,windv3))
 				ensdata=temp3
-				#print ensdata.shape
-				#ensdata=[]
-				#np.insert(ensdata,1,temp3,axis=0)
 				ensdata=np.insert(ensdata,20253,pres3,axis=0)
 				ensdata=np.insert(ensdata,40506,height3,axis=0)
 				ensdata=np.insert(ensdata,60759,humid3,axis=0)
 				ensdata=np.insert(ensdata,81012,windu3,axis=0)
 				ensdata=np.insert(ensdata,101265,windv3,axis=0)
-				#print ensdata.shape
-##				ensdata=temp3
-##				ensdata=np.append(ensdata,pres3)
-##				ensdata=np.append(ensdata,height3)
-##				print ensdata.shape
-##				ensdata=np.append(ensdata,humid3)
-##				ensdata=np.append(ensdata,windu3)
-##				ensdata=np.append(ensdata,windv3)
-
-##				print ensdata.shape#(20253, 180)
-
 				batch_size=100  
-				#print ensdata.shape  #3645540
 				mbk = MiniBatchKMeans(init='k-means++', n_clusters=5, batch_size=batch_size,
 									  n_init=10, max_no_improvement=10, verbose=0)
 				temp1 = ensdata#np.resize(ensdata,(3645540,1))
@@ -2076,8 +1873,6 @@ def clustering2():
 				mbk_means_labels = mbk.labels_ # 3645540 number between 0 and 4 
 				mbk_means_cluster_centers = mbk.cluster_centers_ # 5 numbers between 0 and 1 
 				mbk_means_labels_unique = np.unique(mbk_means_labels)# [0 1 2 3 4]
-				#print mbk_means_labels.shape
-				#print ensdata.shape
 				sixall=[0 for su1 in xrange(6)]
 				cluster=[0 for su1 in xrange(20253)]
 				temp4=mbk_means_labels[0:20253]
@@ -2098,67 +1893,6 @@ def clustering2():
 					unique_word_count = len(unique_words)
 					cluster[i]=unique_word_count#np.count_nonzero(sixall2==sixall)
 
-##                                        
-##				#print '1'
-##				allen=20253
-##				allv=[]
-##				tim = allen/30
-##				allv=[0 for su1 in xrange(allen)]
-##				alltime=[0 for su1 in xrange(tim)]
-##				alltime1=[0 for su1 in xrange(tim)]
-##
-##
-##				#print '1'
-##				allen=607590
-##				allv=[]
-##				tim = allen/30
-##				allv=[0 for su1 in xrange(allen)]
-##				alltime=[0 for su1 in xrange(tim)]
-##				alltimetemp=[0 for su1 in xrange(tim)]
-##				alltimepres=[0 for su1 in xrange(tim)]
-##				alltimehumid=[0 for su1 in xrange(tim)]
-##				alltimeheight=[0 for su1 in xrange(tim)]
-##				alltimewindu=[0 for su1 in xrange(tim)]
-##				alltimewindv=[0 for su1 in xrange(tim)]
-##
-##				"""
-##				for i in xrange(allen):
-##						allv[i]=temp4[i]+humid4[i]+height4[i]+windu4[i]+windv4[i]
-##				"""
-##				#print '2'       
-##				for i in xrange(30):
-##						j=i*tim
-##						for k in xrange(tim):
-##							   alltimetemp[k]= temp4[k+j]+alltimetemp[k]
-##							   alltimepres[k]= pres4[k+j]+alltimepres[k]
-##							   alltimehumid[k]= humid4[k+j]+alltimehumid[k]
-##							   alltimeheight[k]= height4[k+j]+alltimeheight[k]
-##							   alltimewindu[k]= windu4[k+j]+alltimewindu[k]
-##							   alltimewindv[k]= windv4[k+j]+alltimewindv[k]
-##
-##				te=0; pr=0; hu=0; he=0; wu=0; wv=0
-##				cluster=[0 for su1 in xrange(tim)]
-##				sixall=[0 for su1 in xrange(6)]
-##
-##				for i in xrange(tim):
-##					te=0
-##					sixall[0]=alltimetemp[i]
-##					sixall[1]=alltimepres[i]
-##					sixall[2]=alltimehumid[i]
-##					sixall[3]=alltimeheight[i]
-##					sixall[4]=alltimewindu[i]
-##					sixall[5]=alltimewindv[i]
-##					sixall2=sixall
-##					unique_words = set(sixall2)             # == set(['a', 'b', 'c'])
-##					unique_word_count = len(unique_words)
-##					"""
-##					for j in xrange(5):
-##						if sixall[j]!=sixall2[j]:
-##							te=te+1
-##					print te
-##					"""
-##					cluster[i]=unique_word_count#np.count_nonzero(sixall2==sixall)
-##			  
 				temp2=np.reshape(cluster,(129,157))
 				cmap = matplotlib.colors.ListedColormap(['#7a0177','#c51b8a','#f768a1','#fbb4b9','#feebe2'])
 				im=ax1.pcolor(lons1,lats1,temp2, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
@@ -2167,13 +1901,8 @@ def clustering2():
 				canvas.show()
 				if clustern2.get()== 0:
 						ax1.cla()
-						#cb.cla()
-						#cb.outline.set_visible(False)
-						#cb.set_ticks([])
-						#ax1.cla()
 						plt.xlabel("Longtitude")
 						plt.ylabel("Latitude")
-						#ax1=f.add_subplot(111)
 						canvas.show()
 
 def clusterensembles():
@@ -2183,10 +1912,7 @@ def clusterensembles():
 				,'ens_17','ens_18','ens_19','ens_20','ens_21','ens_22','ens_23','ens_24','ens_25'\
 				,'ens_26','ens_27','ens_28','ens_29','ens_30']
 			   
-				#timestep=randint(0,71)
-				#print timestep
 				timestep=b
-				#timestep=62     
 				enrand=ensembles[29]
 				url=ensrand(enrand)[timestep]
 				dset = Dataset(url)
@@ -2227,9 +1953,6 @@ def clusterensembles():
 				humid3 = humid3.reshape(len(humid3), 1)
 				windu3 = windu3.reshape(len(windu3), 1)
 				windv3 = windv3.reshape(len(windv3), 1)
-
-								
-				#def ensselect(temp1,pres1,humid1,height1,windu1,windv1):
 				for i in xrange(29):
 						enrand=ensembles[i]
 						url=ensrand(enrand)[timestep]
@@ -2277,32 +2000,21 @@ def clusterensembles():
 				temp3=np.insert(temp3, 0, humid3, axis=1)#np.hstack((temp3,humid3))
 				temp3=np.insert(temp3, 0, windu3, axis=1)#np.hstack((temp3,windu3))
 				temp3=np.insert(temp3, 0, windv3, axis=1)#np.hstack((temp3,windv3))
-				print temp3.shape
-				#mbk = AgglomerativeClustering(n_clusters=5, compute_full_tree=True, affinity='euclidean', linkage='complete')#AgglomerativeClustering(linkage='complete', n_clusters=10)
-				#t0 = time()
-				#mbk.fit(X_red)
 				batch_size=100    
 				mbk = MiniBatchKMeans(init='k-means++', n_clusters=5, batch_size=batch_size, n_init=10, max_no_improvement=10, verbose=0)
-				#temp3=np.transpose(temp3)
-				#print temp3.shape
 				mbk.fit(temp3)
 				mbk_means_labels = mbk.labels_
-				#print mbk_means_labels.shape
 				temp2=np.reshape(mbk_means_labels,(129,157))
 				cmap = matplotlib.colors.ListedColormap(['#7a0177','#c51b8a','#f768a1','#fbb4b9','#feebe2'])
 				im=ax1.pcolor(lons1,lats1,temp2, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
-				#cbar = f.colorbar(mappable=im, cax=ax1)
 				cbar = f.colorbar(mappable=im, cax=ax1)#, orientation = 'horizontal')
-				#cbar = f.colorbar(mappable=im, cax=ax1)
 				cbar.ax.set_ylabel('Cluster Number', rotation=270)
 				canvas.show()
 				if clusterens2.get()== 0:
 						ax1.clear()
-						#cbar=cbar.on_mappable_changed(im)
 						cbar.ax.clear()
 						plt.xlabel("Longtitude")
 						plt.ylabel("Latitude")
-						#ax1=f.add_subplot(111)
 						canvas.show()
 
 
@@ -2316,7 +2028,6 @@ def clustertemp():
 				b, level, varn = tileva()
 				b= int(b); level= int(level)
 				timestep=b
-				#timestep=62     
 				enrand=ensembles[29]
 				url=ensrand(enrand)[timestep]
 				dset = Dataset(url)
@@ -2373,7 +2084,6 @@ def clustertemp():
 				temp2=np.reshape(mbk_means_labels,(129,157))
 				cmap = matplotlib.colors.ListedColormap(['#7a0177','#c51b8a','#f768a1','#fbb4b9','#feebe2'])
 				im=ax1.pcolor(lons1,lats1,temp2, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
-				#cbar = f.colorbar(mappable=im, cax=ax1)
 				cbar = plt.colorbar(mappable=im, cax=ax1)#, orientation = 'horizontal')
 				cbar.ax.set_ylabel('Cluster Number', rotation=270)
 				canvas.show()
@@ -2381,7 +2091,6 @@ def clustertemp():
 						ax1.cla()
 						plt.xlabel("Longtitude")
 						plt.ylabel("Latitude")
-						#ax1=f.add_subplot(111)
 						canvas.show()
 
 def regression1():
@@ -2391,8 +2100,6 @@ def regression1():
 				,'ens_26','ens_27','ens_28','ens_29','ens_30']
 			   
 				timestep=b#randint(0,71)
-				#print timestep
-				#timestep=62     
 				enrand=ensembles[29]
 				url=ensrand(enrand)[timestep]
 				dset = Dataset(url)
@@ -2413,7 +2120,6 @@ def regression1():
 				windu3=np.array(windu[19,:,:])
 				windv3=np.array(windv[19,:,:])
 								
-				#def ensselect(temp1,pres1,humid1,height1,windu1,windv1):
 				for i in xrange(29):
 						enrand=ensembles[i]
 						url=ensrand(enrand)[timestep]
@@ -2448,9 +2154,7 @@ def regression1():
 						humid3=np.append(humid3,humid,1)
 						windu3=np.append(windu3,windu,1)
 						windv3=np.append(windv3,windv,1)
-						#return temp3,pres3,humid3,height3,windu3,windv3
-				#temp3,pres3,humid3,height3,windu3,windv3 = ensselect(temp1,pres1,humid1,height1,windu1,windv1)
-				#ensdata2 = np.append(temp3,pres3)
+						
 				ensdata2 = temp3       
 				ensdata2 = np.append(ensdata2,humid3,1)
 				ensdata2 = np.append(ensdata2,height3,1)
@@ -2458,30 +2162,16 @@ def regression1():
 				ensdata2 = np.append(ensdata2,windv3,1)
 				from sklearn import datasets, linear_model
 				lm = linear_model.LinearRegression()
-				#ffff=height
-				#gg=np.append(ffff,temp,1)
-				#lm.fit(ensdata2, pres3)
-				#print lm.intercept_
-				#print lm.coef_.shape     (4710,23550)
-				#print pres3.shape   (129,4710)
-				lm.fit(pres,ensdata2)#(temp,pres)
-				#print lm.coef_.shape
-				#print lm.intercept_.shape
+
+				lm.fit(pres,ensdata2)
 				hh=lm.predict(pres)
-				#print hh.shape
 				cmap = matplotlib.colors.ListedColormap(['#7a0177','#c51b8a','#f768a1','#fbb4b9','#feebe2'])
 				im=ax1.pcolor(lons1,lats1,hh, cmap=cmap)#cmap=cm, vmin=-6, vmax=6)
-				#im=ax1.pcolor(lons1,lats1,hh)#[:,23394:])#windv, hh[:,0:156], temp   23550=157 *30 *5
 				canvas.show()
-				#print lm.coef_#.shape
-				#print lm.intercept_#.shape
-				#temp2=np.reshape(lm.coef_,(129,157))
-				#ax1.pcolor(lons1,lats1,temp2, cmap='RdBu')#cmap=cm, vmin=-6, vmax=6)
 				if regression2.get()== 0:
 						ax1.cla()
 						plt.xlabel("Longtitude")
 						plt.ylabel("Latitude")
-						#ax1=f.add_subplot(111)
 						canvas.show()
 				
 
@@ -2651,27 +2341,13 @@ def pcaf():
 					mm = mm.reshape(len(mm), 1)
 					hh = hh.reshape(len(hh), 1)
 					ensdata2 = ensdata2.reshape(len(xx), 1)
-##					ensdata2 = np.hstack((ensdata2,yy))
-##					ensdata2 = np.hstack((ensdata2,zz))
-##					ensdata2 = np.hstack((ensdata2,mm))
-##					ensdata2 = np.append(ensdata2,hh)
 					ensdata2 = np.insert(ensdata2, 0, yy, axis=1)
-					#print ensdata2.shape
-					#ensdata2 = ensdata2.reshape(len(xx), 2)
-					#print ensdata2.shape
-					#ensdata2 = ensdata2.reshape(len(ensdata2), 1)
 					ensdata2 = np.insert(ensdata2, 0, zz, axis=1)
 					ensdata2 = np.insert(ensdata2, 0, mm, axis=1)
 					ensdata2 = np.insert(ensdata2, 0, hh, axis=1)
-					#print ensdata2.shape
 					pca = PCA(n_components=5)
 					pca.fit(ensdata2)
 					d33[i] = pca.explained_variance_ratio_[0]
-				#print d33
-				#d33[i]=pearcor(xx, yy)
-				#print xx.shape
-				#print height3.shape
-				#print d33.shape
 
 				vx1=[[0.0 for xv in range(lons.shape[1])] for xv in range(lons.shape[0])]
 				vy1=[[0.0 for xv in range(lons.shape[1])] for xv in range(lons.shape[0])]
@@ -2694,30 +2370,6 @@ def pcaf():
 						canvas.show()
 
 
-##
-##						temp3 = np.insert(temp3, 0, temp, axis=0)
-##						pres3= np.insert(pres3, 0, pres, axis=0)
-##						#return temp3,pres3,humid3,height3,windu3,windv3
-##				#temp3,pres3,humid3,height3,windu3,windv3 = ensselect(temp1,pres1,humid1,height1,windu1,windv1)
-##				ensdata2 = humid3#np.append(temp3,pres3)
-##				ensdata2 = np.insert(ensdata2, 0, windv3, axis=1)
-##				ensdata21 = windu3#np.append(temp3,pres3)
-##				ensdata21 = np.insert(ensdata21, 0, height3, axis=1)
-##				print ensdata2.shape
-##				#ensdata2 = temp3       
-####				ensdata2 = np.append(ensdata2,humid3,1)
-####				ensdata2 = np.append(ensdata2,height3,1)
-####				ensdata2 = np.append(ensdata2,windu3,1)
-####				ensdata2 = np.append(ensdata2,windv3,1)
-##
-##				pca = PCA(n_components=2)
-##				pca.fit(ensdata2)
-##				print pca.explained_variance_ratio_.shape
-##				print(pca.explained_variance_ratio_)
-##				pca = PCA(n_components=2)
-##				pca.fit(ensdata21)
-##				print pca.explained_variance_ratio_.shape
-##				print(pca.explained_variance_ratio_)
 				
 				
 						
@@ -2730,8 +2382,6 @@ def filled_arc1(center, radius, theta1, theta2, ax, color):
 	ax.add_patch(circ)
 
 def wideline(d3):
-	#for i in xrange(lons.shape[0]):
-	#for j in xrange(lons.shape[1]):
 			if(0<d3<=0.1) or (-0.1<d3<=0):
 				d3=d3*1.07
 			elif(0.1<d3<=0.2) or (-0.2<d3<=-0.1):
@@ -2997,7 +2647,6 @@ def prestemp1lo():
 	,'ens_17','ens_18','ens_19','ens_20','ens_21','ens_22','ens_23','ens_24','ens_25'\
 	,'ens_26','ens_27','ens_28','ens_29','ens_30']
 
-	#time1=42;time2=46;distime=1
 	r=radius
 	enrand=ensembles[29]
 	url=ensrand(enrand)[time1]
@@ -3042,7 +2691,6 @@ def prestemp1lo():
 	d3 = [[0 for x in range(lons.shape[1])] for x in range(lons.shape[0])]
 	for k in xrange(29):
 		enrand=ensembles[k]
-		#for timestep in xrange(time1,time2,distime):
 		url=ensrand(enrand)[time1]
 		dset = Dataset(url)
 		lats = dset.variables['g3_lat_0'][:]
@@ -3142,15 +2790,11 @@ def prestemp1lo():
 def prestemp1ti():
 	time1, time2, level, varn1, varn2 = val()
 	time1 = int(time1);time2 = int(time2)
-	#print(time1,time2)
 	ensembles=['ens_01','ens_02','ens_03','ens_04','ens_05','ens_06','ens_07',\
 	'ens_08','ens_09','ens_10','ens_11','ens_12','ens_13','ens_14','ens_15','ens_16'\
 	,'ens_17','ens_18','ens_19','ens_20','ens_21','ens_22','ens_23','ens_24','ens_25'\
 	,'ens_26','ens_27','ens_28','ens_29','ens_30']
-	#time1=42
-	#time2=46;
 	distime=1;dis=time2-time1+1
-	#print(time1)
 	r=1
 	enrand=ensembles[29]
 	url=ensrand(enrand)[time1]
@@ -3237,7 +2881,6 @@ def prestemp1ti():
 			minp=pres.min();maxp=pres.max();pres=(pres-minp)/(maxp-minp)
 			temp3 = temp#np.insert(temp3, 0, temp, axis=1)
 			pres3 = pres#np.insert(pres3, 0, pres, axis=1)
-			#print(xx)
 			meantemp=[]
 			meanpres=[]
 			max1=-10
